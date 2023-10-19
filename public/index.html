@@ -146,7 +146,7 @@
 					return topojson.feature(json, json.objects.countries)
 						.features;
 				});
-			const dataReq = fetch('http://localhost:8000/api/data')
+			const dataReq = fetch('/api/data')
 				.then((res) => res.json())
 				.then((json) => {
 					const countries = {};
