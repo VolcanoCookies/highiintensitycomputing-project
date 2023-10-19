@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    labels:
+        app: highintensity
+    name: highintensity
+    namespace: highintensity
+spec:
+    selector:
+        matchLabels:
+            app: highintensity
+    template:
+        metadata:
+            labels:
+                app: highintensity
+        spec:
+            containers:
+                - name: highintensity-website
+                  image: highintensity-front
+                  imagePullPolicy: Never
+                  ports:
+                      - containerPort: 8000
+                        name: http-front
+                        protocol: TCP

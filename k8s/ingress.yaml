@@ -1,0 +1,38 @@
+apiVersion: cert-manager.k8s.cloudflare.com/v1
+kind: OriginIssuer
+metadata:
+    name: origin-ca-issuer
+    namespace: highintensity
+spec:
+    requestType: OriginECC
+    auth:
+        serviceKeyRef:
+            name: origin-ca-key
+            key: key
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+    name: highintensity-ingress
+    namespace: highintensity
+    annotations:
+        cert-manager.io/issuer: origin-ca-issuer
+        cert-manager.io/issuer-kind: OriginIssuer
+        cert-manager.io/issuer-group: cert-manager.k8s.cloudflare.com
+spec:
+    tls:
+        - hosts:
+              - highintensity.gniady.dev
+          secretName: cloudflare-gniady-dev-secret
+    rules:
+        - host: highintensity.gniady.dev
+          http:
+              paths:
+                  - path: /
+                    pathType: Prefix
+                    backend:
+                        service:
+                            name: highintensity-service
+                            port:
+                                name: front
+    ingressClassName: nginx

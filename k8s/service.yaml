@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+    name: highintensity-service
+    namespace: highintensity
+spec:
+    ports:
+        - port: 8000
+          protocol: TCP
+          targetPort: http-front
+          name: front
+    selector:
+        app: highintensity
+    sessionAffinity: None
+    type: LoadBalancer
